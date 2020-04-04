@@ -22,13 +22,13 @@ static void print_device(libusb_device *dev) {
 			if (desc.iSerialNumber) {
 					ret = libusb_get_string_descriptor_ascii(handle, desc.iSerialNumber, string, sizeof(string));
 					if (ret > 0) {
-						int i = 0;
 						printf("STLink V2   hla_serial ");
-						while (string[i]) {
+						for (int i = 0; i < ret; i++) {
 							printf("\\x%02X",string[i]);
-							i++;
 						}
 						printf("\n");
+					} else {
+						printf("Unable to retrieve serial number.\n");
 					}
 				}
 			}
@@ -41,6 +41,8 @@ static void print_device(libusb_device *dev) {
 								if (ret > 0) {
 									printf("STLink V2.1 hla_serial ");
 									printf("%s\n",string);
+								} else {
+									printf("Unable to retrieve serial number.\n");
 								}
 							}
 						}
