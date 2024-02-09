@@ -47,6 +47,21 @@ static void print_device(libusb_device *dev) {
 							}
 						}
 			break;
+		case 0x374f:
+		case 0x3754:
+			ret = libusb_open(dev, &handle);
+					if (LIBUSB_SUCCESS == ret) {
+						if (desc.iSerialNumber) {
+								ret = libusb_get_string_descriptor_ascii(handle, desc.iSerialNumber, string, sizeof(string));
+								if (ret > 0) {
+									printf("STLink V3   hla_serial ");
+									printf("%s\n",string);
+								} else {
+									printf("Unable to retrieve serial number.\n");
+								}
+							}
+						}
+			break;
 		default:
 			printf("Device not recognised! (%04X)\n", desc.idProduct);
 		}
